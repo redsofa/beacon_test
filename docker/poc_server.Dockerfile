@@ -57,7 +57,8 @@ RUN mkdir -p /home/$USER/src/python
 
 COPY ./src/python /home/$USER/src/python
 RUN conda develop /home/$USER/src/python/mqtt_client_decode_temp
-RUN cd /home/$USER/src/python/mqtt_client_decode_temp
+
+WORKDIR /home/$USER/src/python/mqtt_client_decode_temp
 
 # -- Runtime
-CMD ["bash"]
+CMD [ "python", "client.py" ] 
