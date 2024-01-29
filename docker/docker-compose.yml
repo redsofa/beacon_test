@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  poc_server:
+    build:
+      context: ../
+      dockerfile: ./docker/poc_server.Dockerfile
+    image: redsofa/poc_server:latest
+    container_name: poc_server
+    environment:
+      - TZ=America/Moncton
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+
+  # mqtt5 eclipse-mosquitto
+  mqtt5:
+    image: eclipse-mosquitto
+    container_name: mqtt5
+    ports:
+      - "1883:1883" #default mqtt port
+      - "9001:9001" #default mqtt port for websockets
+    volumes:
+      - ./mqtt/config:/mosquitto/config:rw
+      - ./mqtt/data:/mosquitto/data:rw
+      - ./mqtt/log:/mosquitto/log:rw
+networks:
+  default:
+    name: mqtt5-network

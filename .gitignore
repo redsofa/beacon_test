@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+.DS_Store
+
+mqtt/data/mosquitto.db
+
 # Distribution / packaging
 .Python
 build/
