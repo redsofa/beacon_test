@@ -8,7 +8,7 @@ There is a Python <b>client.py</b> script, that is also running in a container, 
 
 # Running Example
 
-![alt Intro](https://github.com/redsofa/beacon_test/blob/main/intro.png)
+![alt Intro](https://github.com/redsofa/beacon_test/blob/aarch64/intro.png)
 
 # To Run the PoC
 
