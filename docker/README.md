@@ -15,7 +15,10 @@ Building Image
 Running Redis Server
 --------------------
 - Run this command : `sudo docker-compose up -d redis`
-
+    - OPTIONAL. To login interactively into redis server container and query the database using the redis-cli
+        - Run this command : `sudo docker exec -it redis sh`
+        - Once inside the container, run this command : `redis-cli -h localhost`
+        - To exit the instance, type : `quit` then `type exit`
 
 Running MQTT Server
 -------------------
