@@ -23,7 +23,10 @@ Running Redis Server
 Running MQTT Server
 -------------------
 - Run this command : `sudo docker-compose up -d mqtt5`
-
+    - OPTIONAL. To login interactively into the MQTT server container and connect to the `PUB` topic 
+        - Run this command : `sudo docker exec -it mqtt5 sh`
+        - Once inside the container, run this command : `mosquitto_sub -h localhost -t pub -u admin -P admin`
+        - To exit the instance, type : `Ctrl+C` and `exit`
 
 Running PoC 
 -----------
