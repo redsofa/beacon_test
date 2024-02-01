@@ -12,10 +12,14 @@ Building Image
 - Run this command : `sudo docker-compose build`
 
 
+Running Redis Server
+--------------------
+- Run this command : `sudo docker-compose up -d redis`
+
 
 Running MQTT Server
 -------------------
-- Run this command : `sudo docker-compose up mqtt5`
+- Run this command : `sudo docker-compose up -d mqtt5`
 
 
 Running PoC 

@@ -1,6 +1,23 @@
 version: "3.8"
 
 services:
+
+  # Redis Service 
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/root/redis
+      - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=admin
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=1
+
+  # MQTT Client Example
   poc_server:
     build:
       context: ../
@@ -23,6 +40,7 @@ services:
       - ./mqtt/config:/mosquitto/config:rw
       - ./mqtt/data:/mosquitto/data:rw
       - ./mqtt/log:/mosquitto/log:rw
+
 networks:
   default:
     name: mqtt5-network
