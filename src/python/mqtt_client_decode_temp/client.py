@@ -5,6 +5,9 @@ import ast
 
 TAG = 'AC233FAE2EF7'
 MQTT_SERVER = 'mqtt5'
+MQTT_USER = 'admin'
+MQTT_PWD = 'admin'
+
 
 # The callback function of connection
 def on_connect(client, userdata, flags, rc):
@@ -16,7 +19,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     # print(msg.topic+" "+str(msg.payload.decide('utf-8'))
     json_msg = json.loads(str(msg.payload.decode('utf-8')))
-    if json_msg['data'][0]['tag'] == 'AC233FAE2EF7':
+    if json_msg['data'][0]['tag'] == TAG:
         data = json_msg['data'][0]['raw_data']
         timestamp = json_msg['data'][0]['ts']
         print('Timestamp : {}'.format(timestamp))
@@ -47,9 +50,10 @@ def on_message(client, userdata, msg):
         print()
         print()
 
+
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-client.username_pw_set('admin', 'admin')
+client.username_pw_set(MQTT_USER, MQTT_PWD)
 client.connect(MQTT_SERVER, 1883, 60)
 client.loop_forever()
