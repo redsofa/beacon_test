@@ -1,3 +1,10 @@
+Prerequisites
+------------
+- Jetson Orin Nano with updated Ubuntu - version (e.g. 20.04.6 LTS) 
+- Updated docker-compose version - (v2.24.5)
+
+
+
 Building Image
 --------------
 - Open a terminal window.
