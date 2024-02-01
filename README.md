@@ -9,7 +9,7 @@ Containers run on Jetson Nano Orin host.
 
 # A Running Example
 
-![alt Intro](https://github.com/redsofa/beacon_test/blob/main/intro.png)
+![alt Intro](https://github.com/redsofa/beacon_test/blob/aarch64/intro.png)
 
 # To Run the PoC
 
