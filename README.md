@@ -6,11 +6,14 @@ There is a Python <b>client.py</b> script, that is also running in a container, 
 ![alt Intro](https://github.com/redsofa/beacon_test/blob/aarch64/beacon_test.png)
 
 
+
 # A Running Example
 
 ![alt Intro](https://github.com/redsofa/beacon_test/blob/aarch64/intro.png)
 
-# To Run the PoC
+
+
+# To Run the Example
 
 * See the [./docker/README.md](./docker/README.md) file.
 
