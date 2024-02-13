@@ -33,6 +33,7 @@ Running the mqtt_client Example
 - Open a new terminal window.
 - Run this command : `sudo docker-compose run --rm mqtt_client`
 - Once inside the container, type : `python ./mqtt_client_decode_i10/client.py`
+- To exit the instance, type : `Ctrl+C` and `exit`
     - OPTIONAL. Run a parameterized shell script to start the container. 
         - `cd ../src/sh/`
         - `sh mqtt_i10_client.sh`
