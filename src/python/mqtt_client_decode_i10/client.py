@@ -64,14 +64,14 @@ def get_args():
         '--mqtt_port',
         default=DEFAULT_MQTT_PORT,
         required=False,
-        type=str,
+        type=int,
         help='MQTT port.'
     )
     parser.add_argument(
         '--mqtt_keep_alive',
         default=DEFAULT_MQTT_KEEP_ALIVE,
         required=False,
-        type=str,
+        type=int,
         help='MQTT keep alive.'
     )
   
