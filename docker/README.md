@@ -31,6 +31,6 @@ Running MQTT Server
 Running PoC 
 -----------
 - Open a new terminal window.
-- Run this command `sudo docker-compose run --rm poc_server`
+- Run this command `sudo docker-compose run --rm mqtt_client`
 
 

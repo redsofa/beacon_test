@@ -55,17 +55,12 @@ RUN conda update --name base --channel defaults conda && \
     pip install --upgrade pip && \
     pip install river==0.21.0 && \
     pip install numpy==1.25.2 && \
-    pip install paho-mqtt==1.6.1 && \
+    pip install paho-mqtt==2.0.0 && \
     pip install redis==5.0.1 && \
     pip install hiredis==2.3.2
 
-# -- Layer : src and data files
-RUN mkdir -p /home/$USER/src/python
 
-COPY ./src/python /home/$USER/src/python
-RUN conda develop /home/$USER/src/python/mqtt_client_decode_temp
-
-WORKDIR /home/$USER/src/python/mqtt_client_decode_temp
+WORKDIR /src/python
 
 # -- Runtime
-CMD [ "python", "client.py" ] 
+# CMD [ "python", "client.py" ] 

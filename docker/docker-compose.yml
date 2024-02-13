@@ -17,12 +17,14 @@ services:
       - REDIS_DATABASES=1
 
   # MQTT Client Example
-  poc_server:
+  mqtt_client:
     build:
       context: ../
-      dockerfile: ./docker/poc_server.Dockerfile
-    image: redsofa/poc_server:latest
-    container_name: poc_server
+      dockerfile: ./docker/mqtt_client.Dockerfile
+    image: redsofa/mqtt_client:latest
+    container_name: mqtt_client
+    volumes:
+      - ../src/python:/src/python
     environment:
       - TZ=America/Moncton
     stdin_open: true # docker run -i
