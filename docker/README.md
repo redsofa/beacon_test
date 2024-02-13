@@ -28,9 +28,11 @@ Running MQTT Server
         - Once inside the container, run this command : `mosquitto_sub -h localhost -t pub -u admin -P admin`
         - To exit the instance, type : `Ctrl+C` and `exit`
 
-Running PoC 
------------
+Running the mqtt_client Example 
+-------------------------------
 - Open a new terminal window.
-- Run this command `sudo docker-compose run --rm mqtt_client`
-- Once inside the container, `python ./mqtt_client_decode_i10/client.py`
-
+- Run this command : `sudo docker-compose run --rm mqtt_client`
+- Once inside the container, type : `python ./mqtt_client_decode_i10/client.py`
+    - OPTIONAL. Run a parameterized shell script to start the container. 
+        - `cd ../src/sh/`
+        - `sh mqtt_i10_client.sh`
