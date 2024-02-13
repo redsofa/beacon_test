@@ -32,5 +32,5 @@ Running PoC
 -----------
 - Open a new terminal window.
 - Run this command `sudo docker-compose run --rm mqtt_client`
-
+- Once inside the container, `python ./mqtt_client_decode_i10/client.py`
 
