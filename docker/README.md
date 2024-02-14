@@ -35,5 +35,5 @@ Running a mqtt_client Example
 - Once inside the container, type : `python ./mqtt_client_decode_i10/client.py`
 - To exit the instance, type : `Ctrl+C` and `exit`
     - OPTIONAL. Run a parameterized shell script to start the container. 
-        - `cd ../src/sh/`
+        - `cd ../src/bash/`
         - `sh mqtt_i10_client.sh`
