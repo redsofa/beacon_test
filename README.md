@@ -9,7 +9,7 @@ There is a Python <b>client.py</b> script, that is also running in a container, 
 
 # Running Examples
 
-![alt Example](https://github.com/redsofa/beacon_test/blob/main/beacontest.gif)
+![alt Example](https://github.com/redsofa/beacon_test/blob/main/beacon_test.gif)
 
 
 
