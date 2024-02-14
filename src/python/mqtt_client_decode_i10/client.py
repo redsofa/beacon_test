@@ -118,9 +118,11 @@ def on_message(client, userdata, msg):
                 result['ts'] = data['ts']
                 result['gw'] = data['gw']
                 result['tag'] = data['tag']
+                result['beacon_type'] = 'i10'
                 result['vbatt'] = data['vbatt']
                 result['temp'] = data['temp']
                 logging.debug(f'Beacon data : {result}')
+                print()
     else:
         err = 'Tag not passed in as userdata element in message callback'
         logging.error(err)
