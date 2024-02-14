@@ -7,13 +7,13 @@ There is a Python <b>client.py</b> script, that is also running in a container, 
 
 
 
-# A Running Example
+# Running Examples
 
-![alt Intro](https://github.com/redsofa/beacon_test/blob/main/beacontest.jpg)
+![alt Example](https://github.com/redsofa/beacon_test/blob/main/beacontest.gif)
 
 
 
-# To Run the Example
+# To Run the Examples
 
 * See the [./docker/README.md](./docker/README.md) file.
 
