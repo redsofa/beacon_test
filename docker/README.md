@@ -34,6 +34,9 @@ Running a mqtt_client Example
 - Run this command : `sudo docker-compose run --rm mqtt_client`
 - Once inside the container, type : `python ./mqtt_client_decode_i10/client.py`
 - To exit the instance, type : `Ctrl+C` and `exit`
-    - OPTIONAL. Run a parameterized shell script to start the container. 
+    - OPTIONAL. For i10 beacon. Run a parameterized shell script to start the container. 
         - `cd ../src/bash/`
         - `sh mqtt_i10_client.sh`
+    - Optional. For industrial temperature beacon. Run a parameterized shell script to start the container.
+        - `cd ../scr/bash`
+        - `sh mqtt_temp_client.sh` 
