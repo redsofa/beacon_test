@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Command to start the docker container 
 sudo docker-compose \
