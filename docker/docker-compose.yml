@@ -1,12 +1,30 @@
 version: "3.8"
 
 services:
-  poc_server:
+
+  # Redis Service 
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/root/redis
+      - ./redis/config/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=admin
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=1
+
+  # MQTT Client Example
+  mqtt_client:
     build:
       context: ../
-      dockerfile: ./docker/poc_server.Dockerfile
-    image: redsofa/poc_server:latest
-    container_name: poc_server
+      dockerfile: ./docker/mqtt_client.Dockerfile
+    image: redsofa/mqtt_client:latest
+    container_name: mqtt_client
+    volumes:
+      - ../src/python:/src/python
     environment:
       - TZ=America/Moncton
     stdin_open: true # docker run -i
@@ -23,6 +41,7 @@ services:
       - ./mqtt/config:/mosquitto/config:rw
       - ./mqtt/data:/mosquitto/data:rw
       - ./mqtt/log:/mosquitto/log:rw
+
 networks:
   default:
     name: mqtt5-network

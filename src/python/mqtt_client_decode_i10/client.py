@@ -1,12 +1,11 @@
-import paho.mqtt.client as mqtt
-import ast
 import argparse
 import logging
+import paho.mqtt.client as mqtt
 import json
 
 
 DEFAULT_LOG_LEVEL = 'DEBUG'
-DEFAULT_BEACON_MAC = 'AC233FAE2EF7'
+DEFAULT_BEACON_MAC = 'C300000A5F41'
 DEFAULT_MQTT_SERVER_ADDRESS = 'mqtt5'
 DEFAULT_MQTT_USER_NAME = 'admin'
 DEFAULT_MQTT_PASSWORD = 'admin'
@@ -17,7 +16,7 @@ DEFAULT_MQTT_KEEP_ALIVE = 60
 
 def get_args():
     parser = argparse.ArgumentParser(
-        description="mqtt-client - Industrial Temperature, Humidity Beacon"
+        description="mqtt-client - i10 Beacon"
     )
     parser.add_argument(
         '--beacon_mac',
@@ -79,6 +78,15 @@ def get_args():
     return parser.parse_args()
 
 
+def on_subscribe(client, userdata, mid, reason_code_list, properties):
+    # Reason_code_list can have have multiple results if subscribed to multiple
+    # topics. We only subscribed to one topic so the array has one element.
+    if reason_code_list[0].is_failure:
+        logging.debub(f'Subscription rejected. Reason : {reason_code_list[0]}')
+    else:
+        logging.debug(f'Broker granted the following QoS: {reason_code_list[0].value}')
+
+
 def on_connect(client, userdata, flags, reason_code, properties):
     if (userdata is not None) and ('topic' in userdata):
         topic = userdata['topic']
@@ -95,55 +103,24 @@ def on_connect(client, userdata, flags, reason_code, properties):
         raise Exception(err)
 
 
-def on_subscribe(client, userdata, mid, reason_code_list, properties):
-    # Reason_code_list can have have multiple results if subscribed to multiple
-    # topics. We only subscribed to one topic so the array has one element.
-    if reason_code_list[0].is_failure:
-        logging.debub(f'Subscription rejected. Reason : {reason_code_list[0]}')
-    else:
-        logging.debug(f'Broker granted the following QoS: {reason_code_list[0].value}')
-
-
 def on_message(client, userdata, msg):
-
-    def parse_msg(data):
-        result = {}
-        raw_data = data['raw_data']
-        result['ts'] = data['ts']
-        result['gw'] = data['gw']
-        result['tag'] = data['tag']
-        result['beacon_type'] = 'industrial temp and humidity'
-        # gen_info = raw_data[0:14]  # general info is the first 7 bytes
-        # frame_type = raw_data[14:16]
-        frame_version = raw_data[16:18]
-        if frame_version == '05':  # Temp and humidity frame
-            temp_hex = '0x' + raw_data[24:28]
-            temp_lit = ast.literal_eval(temp_hex)
-            temp = round(temp_lit/256, 1)
-            result['temp'] = temp
-            hum_hex = '0x' + raw_data[28:32]
-            hum_lit = ast.literal_eval(hum_hex)
-            hum = round(hum_lit/256, 1)
-            result['frame_type'] = 'temp_humid'
-            result['humidity'] = hum
-
-        if frame_version == '00':
-            bat_hex = '0x' +raw_data[30:34]
-            bat_lit = ast.literal_eval(bat_hex)
-            bat = round(bat_lit/256, 1)
-            result['frame_type'] = 'battery'
-            result['vbat'] = bat
-
-        logging.debug(f'Beacon data : {result}')
-        print()
+    result = {}
 
     if (userdata is not None) and ('tag' in userdata):
         tag_to_filter = userdata['tag']
-        json_str = json.loads(str(msg.payload.decode('utf-8')))
-        data = json_str['data'][0]
-        if ('tag' in data) and (data['tag'] == tag_to_filter):
-            if 'type' in data and data['type'] == 'Unknown':
-                parse_msg(data)
+        json_msg = json.loads(str(msg.payload.decode('utf-8')))
+        data = json_msg['data'][0]
+
+        if 'tag' in data and data['tag'] == tag_to_filter:
+            if 'type' in data and data['type'] == 'EddystoneTLM':
+                result['ts'] = data['ts']
+                result['gw'] = data['gw']
+                result['tag'] = data['tag']
+                result['beacon_type'] = 'i10'
+                result['vbatt'] = data['vbatt']
+                result['temp'] = data['temp']
+                logging.debug(f'Beacon data : {result}')
+                print()
     else:
         err = 'Tag not passed in as userdata element in message callback'
         logging.error(err)
@@ -158,7 +135,7 @@ def main():
     logging.debug(f'MQTT Server address : {args.mqtt_server_address}')
     client_user_data = {
         'topic':args.mqtt_topic,
-        'tag':args.beacon_mac
+        'tag': args.beacon_mac
     }
     client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, userdata=client_user_data)
     client.on_connect = on_connect
