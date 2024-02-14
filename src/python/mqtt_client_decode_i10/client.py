@@ -77,7 +77,7 @@ def get_args():
   
     return parser.parse_args()
 
-# The subscribe callback
+
 def on_subscribe(client, userdata, mid, reason_code_list, properties):
     # Reason_code_list can have have multiple results if subscribed to multiple
     # topics. We only subscribed to one topic so the array has one element.
@@ -87,7 +87,6 @@ def on_subscribe(client, userdata, mid, reason_code_list, properties):
         logging.debug(f'Broker granted the following QoS: {reason_code_list[0].value}')
 
 
-# The callback function of connection
 def on_connect(client, userdata, flags, reason_code, properties):
     if (userdata is not None) and ('topic' in userdata):
         topic = userdata['topic']
@@ -104,7 +103,6 @@ def on_connect(client, userdata, flags, reason_code, properties):
         raise Exception(err)
 
 
-# The callback function for received message
 def on_message(client, userdata, msg):
     result = {}
 
