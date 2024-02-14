@@ -106,8 +106,25 @@ def on_connect(client, userdata, flags, reason_code, properties):
 
 # The callback function for received message
 def on_message(client, userdata, msg):
-    json_msg = json.loads(str(msg.payload.decode('utf-8'))) 
-    logging.debug(json_msg)
+    result = {}
+
+    if (userdata is not None) and ('tag' in userdata):
+        tag_to_filter = userdata['tag']
+        json_msg = json.loads(str(msg.payload.decode('utf-8')))
+        data = json_msg['data'][0]
+
+        if 'tag' in data and data['tag'] == tag_to_filter:
+            if 'type' in data and data['type'] == 'EddystoneTLM':
+                result['ts'] = data['ts']
+                result['gw'] = data['gw']
+                result['tag'] = data['tag']
+                result['vbatt'] = data['vbatt']
+                result['temp'] = data['temp']
+                logging.debug(result)
+    else:
+        err = 'Tag not passed in as userdata element in message callback'
+        logging.error(err)
+        raise Exception(err)
 
 
 def main():
@@ -116,7 +133,10 @@ def main():
     logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', level=args.loglevel)
     logging.debug(f'Beacon MAC address : {args.beacon_mac}')
     logging.debug(f'MQTT Server address : {args.mqtt_server_address}')
-    client_user_data = {'topic':args.mqtt_topic}
+    client_user_data = {
+        'topic':args.mqtt_topic,
+        'tag': args.beacon_mac
+    }
     client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, userdata=client_user_data)
     client.on_connect = on_connect
     client.on_message = on_message

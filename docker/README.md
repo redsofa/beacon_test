@@ -28,7 +28,7 @@ Running MQTT Server
         - Once inside the container, run this command : `mosquitto_sub -h localhost -t pub -u admin -P admin`
         - To exit the instance, type : `Ctrl+C` and `exit`
 
-Running the mqtt_client Example 
+Running a mqtt_client Example 
 -------------------------------
 - Open a new terminal window.
 - Run this command : `sudo docker-compose run --rm mqtt_client`
