@@ -26,25 +26,6 @@ services:
       - REDIS_PORT=6379
       - REDIS_DATABASES=1
 
-  # Dash Example App
-  dash_app:
-    build:
-      context: ../
-      dockerfile: ./docker/dash_app.Dockerfile
-    image: redsofa/dash_app:latest
-    container_name:
-      dash_app
-    networks:
-      - default
-    ports:
-      - "8080:8080"
-    volumes:
-      - ../src/python:/src/python
-    environment:
-      - TZ=America/Moncton
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
-
   # MQTT Client Example
   mqtt_client:
     build:

@@ -59,8 +59,7 @@ RUN conda update --name base --channel defaults conda && \
     pip install redis==5.0.1 && \
     pip install hiredis==2.3.2
 
-
 WORKDIR /src/python
-
+RUN conda develop /src/python/modules
 # -- Runtime
 # CMD [ "python", "client.py" ] 
