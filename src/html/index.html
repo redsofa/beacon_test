@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MQTT messages</title>
+  </head>
+  <body>
+
+    <h1>MQTT messages</h1>
+    <br />
+    <br />
+
+    <div id="main" style="border: 1px solid #ccc; margin 20px; padding: 20px; height: 500px; overflow: auto;">Loading...<br /></div>
+
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+    <script type="text/javascript">
+      const consoleAdd = function (text) {
+        const main = document.getElementById('main');
+        main.innerHTML += text + '<br />';
+        main.scrollTop = main.scrollHeight;
+      }
+
+      // Connection to your MQTT server, using websocket protocol.
+      // Note: you have to activate websocket support on Stackhero console, in your service configuration.
+      // This example uses the library MQTT.js (https://github.com/mqttjs/MQTT.js)
+
+      // IMPORTANT: you should create a dedicated user with limited rights.
+      // Remember that any client using this page can read the source code and get those credentials!
+      // Note: on Node-RED, the websocket URL ends with "/mqtt/"
+      const url = 'ws://jetson:9001/mqtt';
+      const username = 'admin';
+      const password = 'admin';
+
+      consoleAdd('Connecting to MQTT server ' + url + '...');
+
+      // Connecting to MQTT server using websockets
+      const client = mqtt.connect(url, { username, password });
+
+      client.on('error', function (error) {
+        consoleAdd('Error: ' + error);
+      });
+
+      client.on('close', function () {
+        consoleAdd('Connection has been closed');
+      });
+
+      client.on('reconnect', function () {
+        consoleAdd('Reconnecting...');
+      });
+
+      // On MQTT connection, we subscribe to the "presence" topic and send "Hello MQTT" to it.
+      client.on('connect', function () {
+        consoleAdd('Connected!');
+        const topic = 'i10';
+        client.subscribe(topic, function (err, res) {
+          if (err) {
+            consoleAdd('Error when subscribing to topic ' + topic + ': ' + err);
+            return;
+          }
+       })
+      });
+
+      // Show messages received on every topic
+      client.on('message', function (topic, message) {
+        consoleAdd('Message received from MQTT server on topic "' + topic + '": ' + message);
+      });
+    </script>
+  </body>
+</html>

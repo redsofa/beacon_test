@@ -61,7 +61,8 @@ RUN conda update --name base --channel defaults conda && \
     pip install dash==2.15.0 && \
     pip install waitress==3.0.0 && \
     pip install hupper==1.12.1 && \
-    pip install watchdog==4.0.0
+    pip install watchdog==4.0.0 && \
+    pip install dash-extensions==1.0.12 
 
 WORKDIR /src/python
 

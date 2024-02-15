@@ -2,6 +2,14 @@ version: "3.8"
 
 services:
 
+  apache:
+    image: httpd:latest
+    container_name: apache
+    ports:
+      - '80:80'
+    volumes:
+      - ../src/html:/usr/local/apache2/htdocs
+
   # Redis Service 
   redis:
     image: redis:latest

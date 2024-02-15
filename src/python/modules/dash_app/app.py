@@ -20,7 +20,7 @@ app.layout = html.Div(children=[
     html.H1(children=ret_test()),
 
     html.Div(children='''
-        This is atest.
+        This is a test.
     '''),
 
     dcc.Graph(

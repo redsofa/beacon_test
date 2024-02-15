@@ -7,5 +7,5 @@ sudo docker-compose \
 	-p 8080:8080 \
 	--name dash_app \
 	--rm dash_app \
-	hupper -m dash_app.app
+	hupper -m dash_app2.app
 
