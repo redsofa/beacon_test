@@ -12,7 +12,7 @@ DEFAULT_MQTT_PASSWORD = 'admin'
 DEFAULT_MQTT_TOPIC = 'pub'
 DEFAULT_MQTT_PORT = 1883
 DEFAULT_MQTT_KEEP_ALIVE = 60
-
+DEFAULT_I10_TOPIC = 'i10'
 
 def get_args():
     parser = argparse.ArgumentParser(
@@ -120,7 +120,7 @@ def on_message(client, userdata, msg):
                 result['vbatt'] = data['vbatt']
                 result['temp'] = data['temp']
                 logging.debug(f'Beacon data : {result}')
-                result = client.publish('i10', json.dumps(result))
+                result = client.publish(DEFAULT_I10_TOPIC, json.dumps(result))
     else:
         err = 'Tag not passed in as userdata element in message callback'
         logging.error(err)
