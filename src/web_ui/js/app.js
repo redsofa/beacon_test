@@ -22,7 +22,7 @@ $(function(){
 	    },
 
 	    title: {
-		text: 'Temperature'
+		text: 'i10 Beacon'
 	    },
 
 	    pane: {

@@ -15,6 +15,7 @@ DEFAULT_MQTT_PORT = 1883
 DEFAULT_MQTT_KEEP_ALIVE = 60
 DEFAULT_I10_TOPIC = 'i10'
 
+
 def get_args():
     parser = argparse.ArgumentParser(
         description="mqtt-client - i10 Beacon"
@@ -114,6 +115,19 @@ def on_connect(client, userdata, flags, reason_code, properties):
 def on_message(client, userdata, msg):
     result = {}
 
+    def update_minute_counter(userdata, ts):
+        if userdata['counter_start_time'] is None:
+            userdata['counter_start_time'] = ts
+            userdata['per_min_counter'] = userdata['per_min_counter'] + 1
+        else:
+            if ts - userdata['counter_start_time'] >= 10:
+                userdata['msg_count_for_min'] = userdata['per_min_counter']
+                userdata['counter_start_time'] = ts
+                userdata['current_minute'] = userdata['current_minute'] + 1
+                userdata['per_min_counter'] = 0
+            else:
+                userdata['per_min_counter'] = userdata['per_min_counter'] + 1
+
     if (userdata is not None) and ('tag' in userdata):
         tag_to_filter = userdata['tag']
         output_topic = userdata['output_topic']
@@ -128,7 +142,11 @@ def on_message(client, userdata, msg):
                 result['beacon_type'] = 'i10'
                 result['vbatt'] = data['vbatt']
                 result['temp'] = data['temp']
-                logging.debug(f'Sending beacon data : {result} to output topic {output_topic}')
+                update_minute_counter(userdata, data['ts'])
+                result['per_min_counter'] = userdata['per_min_counter']
+                result['msg_count_for_min'] = userdata['msg_count_for_min']
+                result['current_minute'] = userdata['current_minute']
+                logging.debug(f'Sending beacon data : {result} to output topic : {output_topic}')
                 result = client.publish(output_topic, json.dumps(result))
     else:
         err = 'Tag not passed in as userdata element in message callback'
@@ -145,7 +163,11 @@ def main():
     client_user_data = {
         'input_topic': args.mqtt_input_topic,
         'output_topic': args.mqtt_output_topic,
-        'tag': args.beacon_mac
+        'tag': args.beacon_mac,
+        'per_min_counter' : 0,
+        'counter_start_time' : None,
+        'msg_count_for_min': 0,
+        'current_minute' : 0,
     }
     client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, userdata=client_user_data)
     client.on_connect = on_connect
