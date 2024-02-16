@@ -9,7 +9,8 @@ DEFAULT_BEACON_MAC = 'C300000A5F41'
 DEFAULT_MQTT_SERVER_ADDRESS = 'mqtt5'
 DEFAULT_MQTT_USER_NAME = 'admin'
 DEFAULT_MQTT_PASSWORD = 'admin'
-DEFAULT_MQTT_TOPIC = 'pub'
+DEFAULT_MQTT_OUTPUT_TOPIC = 'i10'
+DEFAULT_MQTT_INPUT_TOPIC = 'pub'
 DEFAULT_MQTT_PORT = 1883
 DEFAULT_MQTT_KEEP_ALIVE = 60
 DEFAULT_I10_TOPIC = 'i10'
@@ -54,11 +55,18 @@ def get_args():
         help='MQTT server password.'
     )
     parser.add_argument(
-        '--mqtt_topic',
-        default=DEFAULT_MQTT_TOPIC,
+        '--mqtt_input_topic',
+        default=DEFAULT_MQTT_INPUT_TOPIC,
         required=False,
         type=str,
-        help='MQTT topic.'
+        help='MQTT input topic.'
+    )
+    parser.add_argument(
+        '--mqtt_output_topic',
+        default=DEFAULT_MQTT_OUTPUT_TOPIC,
+        required=False,
+        type=str,
+        help='MQTT output topic.'
     )
     parser.add_argument(
         '--mqtt_port',
@@ -88,15 +96,15 @@ def on_subscribe(client, userdata, mid, reason_code_list, properties):
 
 
 def on_connect(client, userdata, flags, reason_code, properties):
-    if (userdata is not None) and ('topic' in userdata):
-        topic = userdata['topic']
+    if (userdata is not None) and ('input_topic' in userdata):
+        input_topic = userdata['input_topic']
 
         if reason_code.is_failure:
             logging.error(f'Failed to connect: {reason_code}. loop_forever() will retry connection')
         else:
             logging.debug(f'Connected with reason code: {reason_code}')
-            logging.debug(f'Subscribed to topic : {topic}')
-            client.subscribe(topic)
+            logging.debug(f'Subscribed to topic : {input_topic}')
+            client.subscribe(input_topic)
     else:
         err = 'Topic not passed in as userdata element in connection callback'
         logging.error(err)
@@ -108,6 +116,7 @@ def on_message(client, userdata, msg):
 
     if (userdata is not None) and ('tag' in userdata):
         tag_to_filter = userdata['tag']
+        output_topic = userdata['output_topic']
         json_msg = json.loads(str(msg.payload.decode('utf-8')))
         data = json_msg['data'][0]
 
@@ -119,8 +128,8 @@ def on_message(client, userdata, msg):
                 result['beacon_type'] = 'i10'
                 result['vbatt'] = data['vbatt']
                 result['temp'] = data['temp']
-                logging.debug(f'Beacon data : {result}')
-                result = client.publish(DEFAULT_I10_TOPIC, json.dumps(result))
+                logging.debug(f'Sending beacon data : {result} to output topic {output_topic}')
+                result = client.publish(output_topic, json.dumps(result))
     else:
         err = 'Tag not passed in as userdata element in message callback'
         logging.error(err)
@@ -134,7 +143,8 @@ def main():
     logging.debug(f'Beacon MAC address : {args.beacon_mac}')
     logging.debug(f'MQTT Server address : {args.mqtt_server_address}')
     client_user_data = {
-        'topic':args.mqtt_topic,
+        'input_topic': args.mqtt_input_topic,
+        'output_topic': args.mqtt_output_topic,
         'tag': args.beacon_mac
     }
     client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2, userdata=client_user_data)

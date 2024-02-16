@@ -11,6 +11,7 @@ sudo docker-compose \
 		--mqtt_server_address mqtt5 \
 		--mqtt_server_user admin \
 		--mqtt_server_password admin \
-		--mqtt_topic pub \
+		--mqtt_input_topic pub \
+		--mqtt_output_topic i10 \
 		--mqtt_port 1883 \
 		--mqtt_keep_alive 60
