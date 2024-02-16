@@ -11,7 +11,7 @@ messages to the screen. Note that all containers run on Jetson Nano Orin host.
 ![alt Intro](https://github.com/redsofa/beacon_test/blob/aarch64/beacon_test.png)
 
 
-# Running Examples
+# Running Python Examples
 
 ![alt Example](https://github.com/redsofa/beacon_test/blob/main/beacon_test.gif)
 
