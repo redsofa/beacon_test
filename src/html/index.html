@@ -9,9 +9,114 @@
     <br />
     <br />
 
-    <div id="main" style="border: 1px solid #ccc; margin 20px; padding: 20px; height: 500px; overflow: auto;">Loading...<br /></div>
+    <div id="main" style="border: 1px solid #ccc; margin 20px; padding: 20px; height: 100px; overflow: auto;">Loading...<br /></div>
 
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <figure class="highcharts-figure">
+        <div id="container-speed" class="chart-container"></div>
+    </figure>
+
+
+   <script type="text/javascript">
+      const gaugeOptions = {
+          chart: {
+              type: 'solidgauge'
+          },
+
+          title: null,
+
+          pane: {
+              center: ['50%', '85%'],
+              size: '140%',
+              startAngle: -90,
+              endAngle: 90,
+              background: {
+                  backgroundColor:
+                      Highcharts.defaultOptions.legend.backgroundColor || '#EEE',
+                  innerRadius: '60%',
+                  outerRadius: '100%',
+                  shape: 'arc'
+              }
+          },
+
+          exporting: {
+              enabled: false
+          },
+
+          tooltip: {
+              enabled: false
+          },
+
+          // the value axis
+          yAxis: {
+              stops: [
+                  [0.1, '#55BF3B'], // green
+                  [0.5, '#DDDF0D'], // yellow
+                  [0.9, '#DF5353'] // red
+              ],
+              lineWidth: 0,
+              tickWidth: 0,
+              minorTickInterval: null,
+              tickAmount: 2,
+              title: {
+                  y: -70
+              },
+              labels: {
+                  y: 16
+              }
+          },
+
+          plotOptions: {
+              solidgauge: {
+                  dataLabels: {
+                      y: 5,
+                      borderWidth: 0,
+                      useHTML: true
+                  }
+              }
+          }
+      };
+
+      // The speed gauge
+      const chartSpeed = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
+          yAxis: {
+              min: 0,
+              max: 200,
+              title: {
+                  text: 'Temperature'
+              }
+          },
+
+          credits: {
+              enabled: false
+          },
+
+          series: [{
+              name: 'Temp',
+              data: [0],
+              dataLabels: {
+                  format:
+                      '<div style="text-align:center">' +
+                      '<span style="font-size:25px">{y}</span><br/>' +
+                      '<span style="font-size:12px;opacity:0.4">Celcius</span>' +
+                      '</div>'
+              },
+              tooltip: {
+                  valueSuffix: 'Celcius'
+              }
+          }]
+
+      }));
+    </script>
+
 
     <script type="text/javascript">
       const consoleAdd = function (text) {
@@ -63,6 +168,24 @@
       // Show messages received on every topic
       client.on('message', function (topic, message) {
         consoleAdd('Message received from MQTT server on topic "' + topic + '": ' + message);
+        const obj = JSON.parse(message);
+        let point,
+              newVal,
+              inc;
+
+        if (chartSpeed) {
+              point = chartSpeed.series[0].points[0];
+              //inc = Math.round((Math.random() - 0.5) * 100);
+              //newVal = obj.temp + inc;
+
+              //if (newVal < 0 || newVal > 200) {
+              //      newVal = point.y - inc;
+              //}
+
+              point.update(obj.temp);
+        }
+
+        
       });
     </script>
   </body>
