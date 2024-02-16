@@ -11,11 +11,14 @@ messages to the screen. Note that all containers run on Jetson Nano Orin host.
 ![alt Intro](https://github.com/redsofa/beacon_test/blob/main/beacon_test.png)
 
 
-
 # Running Examples
 
 ![alt Example](https://github.com/redsofa/beacon_test/blob/main/beacon_test.gif)
 
+
+# Web Client
+
+![alt Web Client](https://github.com/redsofa/beacon_test/blob/aarch64/updating.gif)
 
 
 # To Run the Examples
