@@ -5,11 +5,13 @@
   </head>
   <body>
 
-    <h1>MQTT messages</h1>
-    <br />
-    <br />
+    <figure class="highcharts-figure">
+        <div id="container-speed" class="chart-container"></div>
+    </figure>
 
-    <div id="main" style="border: 1px solid #ccc; margin 20px; padding: 20px; height: 100px; overflow: auto;">Loading...<br /></div>
+    <h1>MQTT messages</h1>
+
+    <div id="main" style="border: 1px solid #ccc; margin 20px; padding: 20px; height: 20px; overflow: auto;">Loading...<br /></div>
 
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
@@ -19,10 +21,6 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-
-    <figure class="highcharts-figure">
-        <div id="container-speed" class="chart-container"></div>
-    </figure>
 
 
    <script type="text/javascript">
@@ -89,7 +87,7 @@
       const chartSpeed = Highcharts.chart('container-speed', Highcharts.merge(gaugeOptions, {
           yAxis: {
               min: 0,
-              max: 200,
+              max: 115,
               title: {
                   text: 'Temperature'
               }
@@ -121,7 +119,7 @@
     <script type="text/javascript">
       const consoleAdd = function (text) {
         const main = document.getElementById('main');
-        main.innerHTML += text + '<br />';
+        main.innerHTML = text + '<br />';
         main.scrollTop = main.scrollHeight;
       }
 
@@ -135,6 +133,7 @@
       const url = 'ws://jetson:9001/mqtt';
       const username = 'admin';
       const password = 'admin';
+      var cnt = 0;
 
       consoleAdd('Connecting to MQTT server ' + url + '...');
 
@@ -167,7 +166,8 @@
 
       // Show messages received on every topic
       client.on('message', function (topic, message) {
-        consoleAdd('Message received from MQTT server on topic "' + topic + '": ' + message);
+        cnt = cnt + 1
+        consoleAdd( cnt + ' - Messages received on topic "' + topic + '"  - Message : ' + message);
         const obj = JSON.parse(message);
         let point,
               newVal,
