@@ -21,15 +21,41 @@
                             <div class="sidebar-sticky">
                                 <ul class="nav flex-column">
                                     <li class="nav-item">
-                                        <button id="mqtt_start_button" type="button" class="btn btn-sm btn-outline-dark btn-block text-left active" data-toggle="button" aria-pressed="true" autocomplete="off">MQTT Start</button>
+                                        <!--<button id="mqtt_start_button" type="button" class="btn btn-sm btn-outline-dark btn-block text-left active" data-toggle="button" aria-pressed="true" autocomplete="off">MQTT Start</button>-->
                                     </li>
                                     <li class="nav-item">
-                                        <button id="mqtt_end_button" type="button" class="btn btn-sm btn-outline-dark btn-block text-left" data-toggle="button" aria-pressed="false" autocomplete="off">MQTT End</button>
+                                        <!--
+                                        <button id="mqtt_end_button" type="button" class="btn btn-sm btn-outline-dark btn-block text-left" data-toggle="button" aria-pressed="false" autocomplete="off">MQTT End</button>-->
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-10 themed-grid-col">
+                             <div class="col-12 themed-grid-col">
+                                <div id="mqtt_div" style="height: 200;">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <table class="table table-bordered table-striped">
+                                                <thead>
+                                                  <tr>
+                                                    <th>Raw MQTT Messages</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <tr>
+                                                    <td>
+                                                        <div id="mqtt_msg"> Loading...</div>
+                                                    </td>
+                                                 </tr>
+                                              </tbody>
+                                              </table>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div> 
+                            <div class="col-12 themed-grid-col">
+                                <div id="gauge" style="height: 400px;"></div>
+                            </div>
                             <div class="col-12 themed-grid-col">
                                 <div id="chart" style="height: 500px;"></div>
                             </div>
@@ -59,29 +85,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-12 themed-grid-col">
-                                <div id="mqtt_div" style="height: 200;">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <table class="table table-bordered table-striped">
-                                                <thead>
-                                                  <tr>
-                                                    <th>Raw MQTT Messages</th>
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                  <tr>
-                                                    <td>
-                                                        <div id="mqtt_msg"> Loading...</div>
-                                                    </td>
-                                                 </tr>
-                                              </tbody>
-                                              </table>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div> 
-                       </div>
+                      </div>
                     </div>
                 </div>
             </div>

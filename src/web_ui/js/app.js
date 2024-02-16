@@ -8,10 +8,39 @@ $(function(){
     const username = 'admin';
     const password = 'admin';
     var cnt = 0;
+    var minute = 0;
     const client = mqtt.connect(url, { username, password });
 
+    function drawMsgRatePlot(){
+        const chart = Highcharts.chart('chart', {
+            chart: {
+                type: 'spline',
+                animation: false,
+                events: {
+                    load() {
+                        let chart = this,
+                        series = chart.series[0];
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    var index = this.point.index;
+                    var data = this.series.data;
+                    return 'Data point number : <b>' + this.x + '</b></br> Value : <b>' + this.y + '</b></br>';
+                }
+            },
+            series: [{
+                name:'Minute Number',
+                data: []
+            }],
+        });
+        chart.setTitle({ text: 'Data Points per Minute' });
+	return chart;
+    }
+
     function drawTemperatureGauge(){
-	return Highcharts.chart('chart', {
+	return Highcharts.chart('gauge', {
 	    chart: {
 		type: 'gauge',
 		alignTicks: false,
@@ -97,12 +126,18 @@ $(function(){
     });
 
     client.on('message', function (topic, message) {
-	cnt = cnt + 1
+	cnt = cnt + 1;
 	consoleAdd( cnt + ' - Messages received on topic "' + topic + '"  - Message : ' + message);
 	incAllPointsCount(cnt);
         const pMsg = JSON.parse(message);
 	const point = tempGauge.series[0].points[0];
 	point.update(pMsg.temp);
+
+	if (pMsg.current_minute > minute) {
+	    minute = pMsg.current_minute;
+	    linePlot.series[0].addPoint([pMsg.current_minute, pMsg.msg_count_for_min], true, false); 
+	}
+
     });
 
     function incAllPointsCount(count){
@@ -116,5 +151,6 @@ $(function(){
     }
 
     tempGauge = drawTemperatureGauge();
+    linePlot = drawMsgRatePlot()
     consoleAdd('Connecting to MQTT server ' + url + '...');
 });

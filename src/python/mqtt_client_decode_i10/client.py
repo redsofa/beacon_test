@@ -120,7 +120,7 @@ def on_message(client, userdata, msg):
             userdata['counter_start_time'] = ts
             userdata['per_min_counter'] = userdata['per_min_counter'] + 1
         else:
-            if ts - userdata['counter_start_time'] >= 10:
+            if ts - userdata['counter_start_time'] >= 60:
                 userdata['msg_count_for_min'] = userdata['per_min_counter']
                 userdata['counter_start_time'] = ts
                 userdata['current_minute'] = userdata['current_minute'] + 1
