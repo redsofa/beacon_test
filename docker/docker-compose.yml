@@ -5,6 +5,8 @@ services:
   apache:
     image: httpd:latest
     container_name: apache
+    networks:
+      - default
     ports:
       - '80:80'
     volumes:
