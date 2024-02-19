@@ -1,5 +1,6 @@
 // The source in this file are adapted from the two examples in the follwing URLs: 
 //
+// https://www.highcharts.com/demo/highcharts/gauge-vu-meter
 // https://www.highcharts.com/demo/highcharts/gauge-dual
 // https://github.com/stackhero-io/mqttWebsocketGettingStarted/blob/master/src/index.html
 $(function(){
@@ -10,6 +11,36 @@ $(function(){
     var cnt = 0;
     var minute = 0;
     const client = mqtt.connect(url, { username, password });
+
+    function drawBatteryPlot(){
+	const chart = Highcharts.chart('temp_chart', {
+            chart: {
+                type: 'spline',
+                animation: false,
+                events: {
+                    load() {
+                        let chart = this,
+                        series = chart.series[0];
+                    }
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    var index = this.point.index;
+                    var data = this.series.data;
+                    return 'Data point number : <b>' + this.x + '</b></br> Value : <b>' + this.y + '</b></br>';
+                }
+            },
+            series: [{
+                name:'Minute Number',
+                data: []
+            }],
+        });
+        chart.setTitle({ text: 'Temperature Over Time' });
+
+	return chart;
+    }
+
 
     function drawMsgRatePlot(){
         const chart = Highcharts.chart('chart', {
@@ -135,9 +166,9 @@ $(function(){
 
 	if (pMsg.current_minute > minute) {
 	    minute = pMsg.current_minute;
-	    linePlot.series[0].addPoint([pMsg.current_minute, pMsg.msg_count_for_min], true, false); 
+	    dataRatePlot.series[0].addPoint([pMsg.current_minute, pMsg.msg_count_for_min], true, false); 
+	    tempPlot.series[0].addPoint([pMsg.current_minute, pMsg.temp], true, false); 
 	}
-
     });
 
     function incAllPointsCount(count){
@@ -151,6 +182,7 @@ $(function(){
     }
 
     tempGauge = drawTemperatureGauge();
-    linePlot = drawMsgRatePlot()
+    dataRatePlot = drawMsgRatePlot();
+    tempPlot = drawBatteryPlot();
     consoleAdd('Connecting to MQTT server ' + url + '...');
 });
