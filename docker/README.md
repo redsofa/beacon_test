@@ -4,12 +4,16 @@ Prerequisites
 - Updated docker-compose version - (v2.24.5)
 
 
-
 Building Image
 --------------
 - Open a terminal window.
 - Make sure you are in the `./docker` directory of the cloned source tree. 
 - Run this command : `sudo docker-compose build`
+
+
+Running the Apache Server
+-------------------------
+- Run this command : `sudo docker-compose up -d apache`
 
 
 Running Redis Server
@@ -20,6 +24,7 @@ Running Redis Server
         - Once inside the container, run this command : `redis-cli -h localhost`
         - To exit the instance, type : `quit` then `type exit`
 
+
 Running MQTT Server
 -------------------
 - Run this command : `sudo docker-compose up -d mqtt5`
@@ -27,6 +32,7 @@ Running MQTT Server
         - Run this command : `sudo docker exec -it mqtt5 sh`
         - Once inside the container, run this command : `mosquitto_sub -h localhost -t pub -u admin -P admin`
         - To exit the instance, type : `Ctrl+C` and `exit`
+
 
 Running a mqtt_client Example 
 -------------------------------
