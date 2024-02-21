@@ -1,6 +1,6 @@
 # Example Overview
 This project is an example project that enables the collection of data from 
-sensor beacons via an ethernet bloothooth gateway and MQTT server. The sensors 
+sensor beacons via an ethernet Bluetooth gateway and MQTT server. The sensors 
 are connected to an ethernet gateway. The gateway receives sensor readings 
 and sends them to an MQTT sever's <b>PUB</b> topic. The MQTT server is 
 configured to run in a Docker container. There are Python <b>(e.g. client.py)</b> 
