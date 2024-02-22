@@ -33,6 +33,8 @@ Running MQTT Server
         - Once inside the container, run this command : `mosquitto_sub -h localhost -t pub -u admin -P admin`
         - To exit the instance, type : `Ctrl+C` and `exit`
 
+    - OPTIONAL. To create a custom Mosquitto password file folow instructions [here](https://github.com/sukesh-ak/setup-mosquitto-with-docker?tab=readme-ov-file#7-create-a-userpassword-in-the-pwfile).
+
 
 Running a mqtt_client Example 
 -------------------------------
